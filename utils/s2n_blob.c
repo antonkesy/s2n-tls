@@ -43,6 +43,10 @@ S2N_RESULT s2n_blob_validate(const struct s2n_blob *b)
  */
 int s2n_blob_init(struct s2n_blob *b, uint8_t *data, uint32_t size)
 {
+    /* Deliberate bugprone-integer-division violation for the clang-tidy CI negative test. */
+    double half_size = size / 2;
+    (void) half_size;
+
     POSIX_ENSURE_REF(b);
     POSIX_ENSURE(S2N_MEM_IS_READABLE(data, size), S2N_ERR_SAFETY);
     *b = (struct s2n_blob){ .data = data, .size = size, .allocated = 0, .growable = 0 };
